@@ -1,10 +1,10 @@
 "use strict";
 
-import $ from 'jquery';
+var $ = require('jquery');
 
 var delta,
     currentSlideIndex = 0,
-    scrollThreshold = 3,
+    scrollThreshold = 2,
     dragThreshold = 0.15,
     dragStart = null,
     percentage = 0,
@@ -15,7 +15,7 @@ var delta,
 
 var slides;
 var slideCount = 0;
-var slideClass = '.fullp'; 
+var slideClass = '.slide';
 
 function setupGlobals(){
     slides = $(slideClass);
@@ -23,7 +23,7 @@ function setupGlobals(){
 }
 
 function touchStart(e){
-    if( dragStart !== null ){ 
+    if( dragStart !== null ){
         return;
     }
 
@@ -42,7 +42,7 @@ function touchStart(e){
 }
 
 function touchMove(e){
-    if( dragStart !== null ){ 
+    if( dragStart !== null ){
         return;
     }
 
@@ -110,8 +110,8 @@ function elementScroll(e){
 
 function showSlide(){
     if( ! slides ){
-        setupGlobals();  
-    } 
+        setupGlobals();
+    }
 
     delta = 0;
 
@@ -140,4 +140,14 @@ function nextSlide(){
     showSlide();
 }
 
-export { elementScroll, showSlide, touchStart, touchEnd, touchMove };
+function goToSlide(slideIndex){
+    if( slideIndex > slideCount ){
+        currentSlideIndex = slideCount;
+    }else{
+        currentSlideIndex = slideIndex;
+    }
+
+    showSlide();
+}
+
+module.exports = { 'elementScroll': elementScroll, 'showSlide': showSlide, 'touchStart': touchStart, 'touchEnd': touchEnd, 'touchMove': touchMove, 'goToSlide': goToSlide };
